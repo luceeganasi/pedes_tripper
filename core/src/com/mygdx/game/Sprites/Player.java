@@ -15,8 +15,6 @@ public class Player {
     private Vector2 position;
     private float speed;
     private Rectangle bounds;
-    private float width;
-    private float height;
 
     public Player(Texture texture, Vector2 position){
         this.texture = texture;
@@ -47,10 +45,6 @@ public class Player {
         return bounds;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
     public void draw(SpriteBatch batch) {
         batch.draw(texture, position.x, position.y);
     }
@@ -65,13 +59,6 @@ public class Player {
 
     public float getHeight(){
         return texture.getHeight();
-    }
-
-    public void drawCollisionBounds(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-        shapeRenderer.end();
     }
 
 

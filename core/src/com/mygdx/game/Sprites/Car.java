@@ -65,15 +65,4 @@ public class Car {
         return bounds1;
     }
 
-    public void drawCollisionBounds(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-        shapeRenderer.end();
-    }
-
-
-
-
-
 }

@@ -1,25 +1,30 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Pedes;
 import com.mygdx.game.Sprites.Car;
 import com.mygdx.game.Sprites.Player;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
     private Pedes game;
     private Texture groundTexture;
-    private Vector2 groundPos1, groundPos2, carPos1, carPos2, carPos3;
+    private Vector2 groundPos1, groundPos2;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Player player;
@@ -41,7 +46,9 @@ public class PlayScreen implements Screen {
     private static final int NUM_CARS1 = 50;
     private float[] carSpawnTimers = new float[NUM_CARS];
     private float[] carSpawnTimers1 = new float[NUM_CARS1];
-    private float lastPlayerY = 0;
+
+
+
 
 
 
@@ -64,7 +71,7 @@ public class PlayScreen implements Screen {
         newCarTexture = new Texture("car-left.png"); // Load car texture
         cars = new ArrayList<>();
         cars1 = new ArrayList<>();
-//        spawnNewCar(0);
+
     }
 
     @Override
@@ -96,11 +103,9 @@ public class PlayScreen implements Screen {
 
     public void randomSpawner() {
         ArrayList<Vector2> carPositions = new ArrayList<>(); // Store spawned car positions
+        ArrayList<Vector2> carPositions1 = new ArrayList<>(); // Store spawned car positions
 
         for (Car car : cars) {
-            carPositions.add(car.getPosition());
-        }
-        for (Car car : cars1) {
             carPositions.add(car.getPosition());
         }
 
@@ -126,6 +131,9 @@ public class PlayScreen implements Screen {
             }
 
         }
+        for (Car car : cars1) {
+            carPositions1.add(car.getPosition());
+        }
 
         for (int i = 0; i < NUM_CARS1; i++) {
 
@@ -135,7 +143,7 @@ public class PlayScreen implements Screen {
 
             // Check if the new car position collides with existing car positions
             boolean canSpawn1 = true;
-            for (Vector2 pos : carPositions) {
+            for (Vector2 pos : carPositions1) {
                 if (Math.abs(newCarSpawnX1 - pos.x) < 500 && Math.abs(newCarSpawnY1 - pos.y) < 300) {
                     canSpawn1 = false;
                     break;
@@ -144,7 +152,7 @@ public class PlayScreen implements Screen {
 
             if (canSpawn1) {
                 spawnNewCarRightToLeft(new Vector2(newCarSpawnX1, newCarSpawnY1)); // Spawn a new car with right-to-left movement
-                carPositions.add(new Vector2(newCarSpawnX1, newCarSpawnY1)); // Add the new car's position to the list
+                carPositions1.add(new Vector2(newCarSpawnX1, newCarSpawnY1)); // Add the new car's position to the list
                 carSpawnTimers1[i] = MathUtils.random(minSpawnTime1, maxSpawnTime1); // Reset timer for the next car spawn
                 resetSpawnTimers1();
             }
@@ -155,14 +163,12 @@ public class PlayScreen implements Screen {
 
     private float getCarSpawnX() {
         // Implement your logic to get a new x-axis position for the car
-        // For example:
-        return MathUtils.random(1000, 6000); // Randomly spawn between x = 100 and x = 900
+        return MathUtils.random(1000, 6000); // Randomly spawn between x = 1000 and x = 6000
     }
 
     private float getCarSpawnX1() {
         // Implement your logic to get a new x-axis position for the car
-        // For example:
-        return MathUtils.random(-6000, -1000); // Randomly spawn between x = 100 and x = 900
+        return MathUtils.random(-6000, -1000); // Randomly spawn between x = -6000 and x = -1000
     }
 
 
@@ -177,12 +183,12 @@ public class PlayScreen implements Screen {
 
 
     public void spawnNewCar(Vector2 position) {
-        Car newCar = new Car(carTexture, position, new Vector2(-300, 0)); // Instantiate the new car
+        Car newCar = new Car(carTexture, position, new Vector2(-550, 0)); // Change the velocity to move from right to left
         cars.add(newCar); // Add the new car to the list
     }
 
     public void spawnNewCarRightToLeft(Vector2 position) {
-        Car newCar = new Car(newCarTexture, position, new Vector2(300, 0)); // Change the velocity to move from right to left
+        Car newCar = new Car(newCarTexture, position, new Vector2(550, 0)); // Change the velocity to move from right to left
         cars1.add(newCar); // Add the new car to the list
     }
 
@@ -215,6 +221,15 @@ public class PlayScreen implements Screen {
     public void trackPlayer() {
         float centerY = gamecam.position.y - (gamecam.viewportHeight * 0.5f);
 
+        float leftBoundary = -gamecam.viewportWidth * 0.5f;
+        float rightBoundary = gamecam.viewportWidth * 0.5f - player.getWidth();
+
+        if (player.getPosition().x < leftBoundary) {
+            player.getPosition().x = leftBoundary;
+        } else if (player.getPosition().x > rightBoundary) {
+            player.getPosition().x = rightBoundary;
+        }
+
 
 
         if (player.getPosition().y >= centerY + 450) {
@@ -244,9 +259,9 @@ public class PlayScreen implements Screen {
             if (player.getBounds().overlaps(car.getBounds())) {
                 // Collision detected between player and car
                 // Perform actions such as game over, score decrement, etc.
-                // Example: Reset player position to avoid further collisions
-                player.setPosition(new Vector2(0, gamePort.getScreenX() - (gamePort.getWorldWidth() / 2) + playerTexture.getHeight() - 200));
-                System.out.println("you deead nigga");
+
+                System.out.println("hehe");
+                game.setScreen(new GameOverScreen(game));
             }
         }
 
@@ -254,12 +269,14 @@ public class PlayScreen implements Screen {
             if (player.getBounds().overlaps(car.getBounds1())) {
                 // Collision detected between player and car
                 // Perform actions such as game over, score decrement, etc.
-                // Example: Reset player position to avoid further collisions
-                player.setPosition(new Vector2(0, gamePort.getScreenX() - (gamePort.getWorldWidth() / 2) + playerTexture.getHeight() - 200));
-                System.out.println("you deead nigga");
+
+                System.out.println("hehe");
+                game.setScreen(new GameOverScreen(game));
             }
         }
     }
+
+
 
     public void update(float dt){
         // Increment timer

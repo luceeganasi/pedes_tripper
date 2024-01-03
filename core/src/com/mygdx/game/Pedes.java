@@ -5,7 +5,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.Screens.GameOverScreen;
 import com.mygdx.game.Screens.PlayScreen;
+import com.mygdx.game.Screens.StartScreen;
 
 public class Pedes extends Game {
 	public static final int V_WIDTH = 1920;
@@ -19,7 +21,7 @@ public class Pedes extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		setScreen(new StartScreen(this));
 	}
 
 	@Override
