@@ -28,10 +28,13 @@ public class GameOverScreen implements Screen {
         viewport = new FitViewport(Pedes.V_WIDTH, Pedes.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Pedes) game).batch);
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("normal.fnt")); // Replace with your font file
-        font.getData().setScale(1);
+        BitmapFont font = new BitmapFont(Gdx.files.internal("arcade.fnt")); // Replace with your font file
+        font.getData().setScale(3);
+        BitmapFont font1 = new BitmapFont(Gdx.files.internal("arcade.fnt")); // Replace with your font file
+        font1.getData().setScale(1);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        Label.LabelStyle labelStyle1 = new Label.LabelStyle(font1, Color.WHITE);
 
 
         Table table = new Table();
@@ -39,7 +42,7 @@ public class GameOverScreen implements Screen {
         table.setFillParent(true);
 
         Label gameOverLabel = new Label("GAME OVER", labelStyle);
-        Label playAgainLabel = new Label("Click to Play Again", labelStyle);
+        Label playAgainLabel = new Label("Click to Play Again", labelStyle1);
 
         table.add(gameOverLabel).expandX();
         table.row();
@@ -60,6 +63,7 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         if(Gdx.input.justTouched()) {
             game.setScreen(new PlayScreen((Pedes) game));
+            PlayScreen.music1.stop();
             dispose();
         }
 

@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -46,10 +47,8 @@ public class PlayScreen implements Screen {
     private static final int NUM_CARS1 = 50;
     private float[] carSpawnTimers = new float[NUM_CARS];
     private float[] carSpawnTimers1 = new float[NUM_CARS1];
-
-
-
-
+    private Music music;
+    public static Music music1;
 
 
 
@@ -72,7 +71,19 @@ public class PlayScreen implements Screen {
         cars = new ArrayList<>();
         cars1 = new ArrayList<>();
 
+        music = Pedes.manager.get("music/short.mp3", Music.class);
+        music.setLooping(true);
+        music.setVolume(0.1f);
+        music.play();
+
+        music1 = Pedes.manager.get("music/anong kailangan.mp3", Music.class);
+        music1.setVolume(0.1f);
+
     }
+
+//    public void anongKailangan(){
+//        music1.stop();
+//    }
 
     @Override
     public void show() {
@@ -261,6 +272,8 @@ public class PlayScreen implements Screen {
                 // Perform actions such as game over, score decrement, etc.
 
                 System.out.println("hehe");
+                music.stop();
+                music1.play();
                 game.setScreen(new GameOverScreen(game));
             }
         }
@@ -271,6 +284,8 @@ public class PlayScreen implements Screen {
                 // Perform actions such as game over, score decrement, etc.
 
                 System.out.println("hehe");
+                music.stop();
+                music1.play();
                 game.setScreen(new GameOverScreen(game));
             }
         }

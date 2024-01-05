@@ -26,8 +26,8 @@ public class StartScreen implements Screen {
         viewport = new FitViewport(Pedes.V_WIDTH, Pedes.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Pedes) game).batch);
 
-        BitmapFont font = new BitmapFont(Gdx.files.internal("normal.fnt")); // Replace with your font file
-        font.getData().setScale(1);
+        BitmapFont font = new BitmapFont(Gdx.files.internal("arcade.fnt")); // Replace with your font file
+        font.getData().setScale(3);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 
@@ -36,12 +36,12 @@ public class StartScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Label gameOverLabel = new Label("Start Game", labelStyle);
-        Label playAgainLabel = new Label("click to play", labelStyle);
+        Label gameOverLabel = new Label("Click to Start", labelStyle);
+//        Label playAgainLabel = new Label("click to play", labelStyle);
 
         table.add(gameOverLabel).expandX();
-        table.row();
-        table.add(playAgainLabel).expandX().padTop(10f);
+//        table.row();
+//        table.add(playAgainLabel).expandX().padTop(10f);
 
 
         stage.addActor(table);
