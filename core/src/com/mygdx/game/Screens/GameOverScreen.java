@@ -43,10 +43,13 @@ public class GameOverScreen implements Screen {
 
         Label gameOverLabel = new Label("GAME OVER", labelStyle);
         Label playAgainLabel = new Label("Click to Play Again", labelStyle1);
+        Label scoreLabel = new Label("SCORE "+ Float.toString(PlayScreen.player.getTotalDistanceY()), labelStyle);
 
-        table.add(gameOverLabel).expandX();
+        table.add(gameOverLabel).expandX().padBottom(100f);
         table.row();
-        table.add(playAgainLabel).expandX().padTop(10f);
+        table.add(scoreLabel).expandX();
+        table.row();
+        table.add(playAgainLabel).expandX().padTop(50f);
 
 
         stage.addActor(table);

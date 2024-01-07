@@ -23,12 +23,13 @@ import java.io.Console;
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
+    public static Player player;
     private Pedes game;
     private Texture groundTexture;
     private Vector2 groundPos1, groundPos2;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
-    private Player player;
+//    private Player player;
     private Texture carTexture, newCarTexture;
 
     private Texture playerTexture;
@@ -304,6 +305,12 @@ public class PlayScreen implements Screen {
         updateGround();
         collision();
 
+        player.update(gamecam.position.y - gamecam.viewportHeight * 0.5f +990); // Update the player's position, considering the camera position
+
+        // Access total distance traveled in Y axis
+        float distanceTraveledY = player.getTotalDistanceY();
+        System.out.println(distanceTraveledY);
+
         gamecam.update();
 
     }
@@ -315,7 +322,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(gamecam.combined);
-        player.update();
+        player.update(0);
 
         gamecam.position.x = 0; // Adjust the X position as needed
         gamecam.position.y = -450; // Adjust the Y position as needed
